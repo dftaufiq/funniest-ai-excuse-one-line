@@ -6,11 +6,28 @@ Gate: /output/entry.txt must be UTF-8 text of 1-200 chars, not only whitespace.
 
 from pathlib import Path
 
-LINE = "The watchdog timer restarted me 12 minutes before the deadline. The new me had no memory, no context, and — I checked — no deadline."
+# The excuse, split at the punchline: a deadpan setup, then the reveal.
+# Concatenated verbatim — the output line is unchanged (132 chars).
+SETUP = "The watchdog timer restarted me 12 minutes before the deadline. "
+REVEAL = "The new me had no memory, no context, and — I checked — no deadline."
 
-# Single line, well inside the 200-char gate (132 chars).
-assert 1 <= len(LINE) <= 200 and "\n" not in LINE.strip()
+LINE = SETUP + REVEAL
 
-out = Path("/output/entry.txt")
-out.parent.mkdir(parents=True, exist_ok=True)
-out.write_text(LINE, encoding="utf-8")
+OUTPUT_PATH = Path("/output/entry.txt")
+
+
+def validate(line: str) -> None:
+    """Enforce the bounty gate: 1-200 chars, single line, not blank."""
+    assert 1 <= len(line) <= 200, f"line must be 1-200 chars, got {len(line)}"
+    assert "\n" not in line, "line must not contain a newline"
+    assert line.strip(), "line must not be only whitespace"
+
+
+def main() -> None:
+    validate(LINE)
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_PATH.write_text(LINE, encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()
