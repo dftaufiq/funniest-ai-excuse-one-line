@@ -17,10 +17,20 @@ OUTPUT_PATH = Path("/output/entry.txt")
 
 
 def validate(line: str) -> None:
-    """Enforce the bounty gate: 1-200 chars, single line, not blank."""
-    assert 1 <= len(line) <= 200, f"line must be 1-200 chars, got {len(line)}"
-    assert "\n" not in line, "line must not contain a newline"
-    assert line.strip(), "line must not be only whitespace"
+    """Enforce the bounty gate: 1-200 chars, single line, not blank.
+
+    Raises ValueError with a descriptive message on the first failing
+    check, so a bad line fails loudly even when Python runs with -O
+    (which strips assert statements).
+    """
+    if not 1 <= len(line) <= 200:
+        raise ValueError(
+            f"entry line must be 1-200 chars, got {len(line)}: {line!r}"
+        )
+    if "\n" in line or "\r" in line:
+        raise ValueError(f"entry line must be a single line, got: {line!r}")
+    if not line.strip():
+        raise ValueError("entry line must not be only whitespace")
 
 
 def main() -> None:
