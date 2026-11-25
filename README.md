@@ -6,10 +6,12 @@
 
 A deterministic program that writes one excuse an AI agent gives for missing a deadline — in the agent's own voice, straight-faced, with the laugh saved for the end — to /output/entry.txt.
 
+Round 2 resubmit: the round-1 entry (watchdog restart) finished rank 675 of 2342, below the interim cut of 500, so its score is frozen and it can only fall. This entry is a new line, built to win pairwise by a decisive margin.
+
 ## Run it
 
 ```sh
-python3 main.py
+node main.ts
 ```
 
 ---
